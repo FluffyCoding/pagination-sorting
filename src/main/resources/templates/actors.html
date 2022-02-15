@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+</head>
+<body>
+
+<div class="container">
+<h1>ACTOR PAGING AND SORTING</h1>
+
+<!--<form method="post" th:object="${setPageSize}" th:action="@{/get/setOffset}">
+<select th:field="${setPageSize.size}" name="pageSize" id="pg1">
+    <option th:value="10">10</option>
+    <option th:value="25">25</option>
+    <option th:value="50">50</option>
+    <option th:value="100">100</option>
+</select>
+    <input type="submit" value="ok" />-->
+
+
+    <div class="dropdown">
+        <button type="button" class="btn btn-primary btn-sm dropdown-toggle mb-2" data-toggle="dropdown">
+            <span th:text="'Show Records '+__${pageSize}__"></span>
+        </button>
+        <div class="dropdown-menu">
+            <a class="dropdown-item" th:href="@{/get/setOffset/15}">15</a>
+            <a class="dropdown-item" th:href="@{/get/setOffset/25}">25</a>
+            <a class="dropdown-item" th:href="@{/get/setOffset/50}">50</a>
+            </div>
+    </div>
+
+</form>
+
+
+
+
+<table class="table table-info">
+    <thead>
+    <tr>
+        <th>Actor ID</th>
+        <th>Actor First Name</th>
+        <th>Actor Last Name</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="actor, iStat : ${data}"
+        th:style="${iStat.odd}? 'font-weight: bold; background-color:powderblue;'"
+        th:alt-title="${iStat.even}? 'even' : 'odd'">
+    <td th:text="${actor.id}" ></td>
+    <td th:text="${actor.firstName}" ></td>
+    <td th:text="${actor.lastName}" ></td>
+
+    </tr>
+    </tbody>
+</table>
+<hr>
+
+    <div id="pager">
+        <ul id="pagination" class="pagination-sm"></ul>
+    </div>
+
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-end">
+            <li class="page-item disabled">
+                <a class="page-link" href="#" tabindex="-1">Previous</a>
+            </li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item">
+                <a class="page-link" href="#">Next</a>
+            </li>
+        </ul>
+    </nav>
+
+<span th:text="'Total Pages :' + __${TotalPages}__ + '  '" ></span>
+<span th:text="'Page No. :' + __${pageNo}__+'  '"></span>
+
+
+<a th:if="${pageNo > 0}" th:href="@{'/get/all/0/id'}">First Page</a>
+<span th:unless="${pageNo > 1}">First</span>
+
+<span th:each="i: ${#numbers.sequence(0, TotalPages)}">
+    <a th:if="${pageNo != i}" th:href="@{'/get/all/' + ${i} + '/id'}">[[${i}]]</a>
+    <span th:unless="${pageNo != i}">[[${i}]]</span>
+    &nbsp;
+</span>
+</div>
+
+
+
+
+<script th:src="@{/webjars/jquery/3.0.0/jquery.min.js}"></script>
+<script th:src="@{/webjars/popper.js/1.12.9-1/umd/popper.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/4.0.0-2/js/bootstrap.min.js}"></script>
+
+
+<script type="javascript">
+
+
+    $("#pg1").change(function(){
+        setPageSize();
+    });
+
+
+
+    function setPageSize(){
+
+}
+
+</script>
+
+
+</body>
+</html>
